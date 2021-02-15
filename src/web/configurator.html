@@ -28,7 +28,10 @@
                     <a class="nav-link" href="#" id="nav-buffer" onclick="toggleTo('buffer');">Buffers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="nav-advanced"onclick="toggleTo('advanced');">Advanced</a>
+                    <a class="nav-link" href="#" id="nav-advanced" onclick="toggleTo('advanced');">Advanced</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-script" onclick="toggleTo('script');">Script</a>
                 </li>
             </ul>
         </div>
@@ -192,10 +195,12 @@
             </div>
 
             <div class="row">
+                <button type="button" class="btn btn-primary" onclick="toggleTo('script');">Generate script</button>
             </div>
         </div>
 
-        <div class="progress" style="height: 30px;" id="bar">
+        <div class="row" id="div-script">
+            <p>Generating setup script...</p>
         </div>
 
     </div>
