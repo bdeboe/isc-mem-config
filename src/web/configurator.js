@@ -46,6 +46,20 @@ function calcAll(step=0) {
     drawBar("bar-advanced-heap", heapMB, totalMB, "Heap");
     drawBar("bar-advanced-iris", totalMB-osMB-globufMB-roubufMB-heapMB, totalMB, "Other IRIS");
     
+
+    // generate script
+    globals = "0,0,"+globufMB+",0,0,0";
+    routines = roubufMB;
+    gmheap = heapMB;
+    locksiz = $("#input-locks").val()*1024*1024;
+    bbsiz = $("#input-ppm").val()*1024;
+
+    $("#script-cpf").text("[config]\n" +
+                          "globals="+globals+"\n" +
+                          "routines="+routines+"\n" +
+                          "gmheap="+gmheap+"\n" +
+                          "locksiz="+locksiz+"\n" +
+                          "bbsiz="+bbsiz);
 }
 
 function drawBar(id, mb, total, str) {
