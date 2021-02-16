@@ -69,7 +69,7 @@ function calcAll() {
                           'set props.locksiz = '+locksiz+"\n" +
                           'set props.bbsiz = '+bbsiz+"\n" +
                           'set status = props.%Save()\n' + 
-                          'if \'status { do $SYSTEM.OBJ.DisplayError(status) } else { write "success" }');
+                          'do:\'status $SYSTEM.OBJ.DisplayError(status)');
 
 }
 
