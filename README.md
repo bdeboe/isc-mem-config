@@ -1,6 +1,8 @@
 # IRIS Memory Configuration Wizard
 
-InterSystems IRIS memory settings are crucial to ensure high performance. This simple web-based wizard helps identify the right settings and links to the corresponding product documentation for additional background.
+:warning: DRAFT - validation in progress
+
+InterSystems IRIS memory settings are crucial to ensure high performance. This simple web-based wizard helps identify best practice settings and links to the corresponding product documentation for additional background.
 
 ## Using the Wizard
 
