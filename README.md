@@ -1,6 +1,6 @@
 # IRIS Memory Configuration Wizard
 
-:warning: DRAFT - validation in progress
+> :warning: DRAFT - validation in progress - this does not represent official best practices while this warning message is in place
 
 InterSystems IRIS memory settings are crucial to ensure high performance. This simple web-based wizard helps identify best practice settings and links to the corresponding product documentation for additional background.
 
