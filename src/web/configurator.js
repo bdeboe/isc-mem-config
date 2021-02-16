@@ -9,7 +9,7 @@ function toggleTo(id) {
 
 toggleTo("system");
 
-function calcAll(step=0) {
+function calcAll() {
 
     // total
     totalMB = $("#input-total").val()*1024;
@@ -50,9 +50,9 @@ function calcAll(step=0) {
     // generate script
     globals = "0,0,"+globufMB+",0,0,0";
     routines = roubufMB;
-    gmheap = heapMB;
-    locksiz = $("#input-locks").val()*1024*1024;
-    bbsiz = $("#input-ppm").val()*1024;
+    gmheap = heapMB*1024; // in kb
+    locksiz = $("#input-locks").val()*1024*1024; // in bytes
+    bbsiz = $("#input-ppm").val()*1024; // in kb
 
     $("#script-cpf").text("[config]\n" +
                           "globals="+globals+"\n" +
@@ -60,6 +60,17 @@ function calcAll(step=0) {
                           "gmheap="+gmheap+"\n" +
                           "locksiz="+locksiz+"\n" +
                           "bbsiz="+bbsiz);
+
+    $("#script-cos").text('zn "%SYS"\n' +
+                          'set props = ##class(Config.config).Open()\n' +
+                          'set props.globals8kb = '+globufMB+"\n" +
+                          'set props.routines = '+routines+"\n" +
+                          'set props.gmheap = '+gmheap+"\n" +
+                          'set props.locksiz = '+locksiz+"\n" +
+                          'set props.bbsiz = '+bbsiz+"\n" +
+                          'set status = props.%Save()\n' + 
+                          'if \'status { do $SYSTEM.OBJ.DisplayError(status) } else { write "success" }');
+
 }
 
 function drawBar(id, mb, total, str) {

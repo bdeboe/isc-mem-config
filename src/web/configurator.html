@@ -10,6 +10,18 @@
     .progress {
         margin-bottom: 20px;
         width: 100%;
+        height: 40px;
+    }
+    .form-control {
+        text-align: center;
+    }
+    .progress-bar {
+        padding: 5px;
+        font-size: medium;
+        font-weight: bold;
+    }
+    p.text-right {
+        width: 100%;
     }
     </style>
 </head>
@@ -40,7 +52,7 @@
             <h1>Getting started</h1>
             <p class="lead">Let's start by confirming the total amount of physical memory available on your machine.</p>
             <form>
-                <div class="form-group" style="width: 200px;">
+                <div class="form-group" style="width: 150px;">
                     <label for="input-total">Total memory</label>
                     <div class="input-group">
                         <input type="number" class="form-control" id="input-total" value="64" onchange="calcAll();" />
@@ -50,15 +62,18 @@
                     </div>
                 </div>
             </form>
+            <p>This is also a good time to verify that your OS is configured to use <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSCALE_vertical#GSCALE_vertical_memory_large" target="_new">Large or Huge Pages</a>.</p>
             
             <div class="row">
-                <div class="progress" style="height: 30px; width: 100%;" id="bar-system">
-                    <div class="progress-bar bg-secondary" role="progressbar" id="bar-system-total" style="width: 100%;">Total</div>
+                <div class="progress" style="width: 100%;" id="bar-system">
+                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-system-total" style="width: 100%;">Total</div>
                 </div>
             </div>
 
             <div class="row">
-                <button type="button" class="btn btn-primary" onclick="toggleTo('os');">Next</button>
+                <p class="lead text-right">
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('os');">Next</button>
+                </p>
             </div>
         </div>
 
@@ -69,7 +84,7 @@
                 <div class="form-group" style="width: 300px;">
                     <label for="input-os">Reserve for others</label>
                     <div class="input-group">
-                        <input type="number" class="form-control" id="input-os" value="10" onchange="calcAll(1);" />
+                        <input type="number" class="form-control" id="input-os" value="10" onchange="calcAll();" />
                         <div class="input-group-append">
                             <span class="input-group-text" id="input-os-t">%</span>
                             <span class="input-group-text" id="input-os-b">MB</span>
@@ -81,13 +96,15 @@
             
             <div class="row">
                 <div class="progress" style="height: 30px;" id="bar-os">
-                    <div class="progress-bar bg-info" role="progressbar" id="bar-os-iris" style="width: 90%;">IRIS</div>
-                    <div class="progress-bar bg-secondary" role="progressbar" id="bar-os-os" style="width: 10%;">OS</div>
+                    <div class="progress-bar text-truncate bg-info" role="progressbar" id="bar-os-iris" style="width: 90%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-os-os" style="width: 10%;">OS</div>
                 </div>
             </div>
 
             <div class="row">
-                <button type="button" class="btn btn-primary" onclick="toggleTo('buffer');">Next</button>
+                <p class="lead text-right">
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('buffer');">Next</button>
+                </p>
             </div>
         </div>
 
@@ -100,26 +117,26 @@
                         <div class="form-group" style="width: 300px;">
                             <label for="input-globuf">Global buffers</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-primary" id="input-globuf" value="50" onchange="calcAll(1);" />
+                                <input type="number" class="form-control border-primary" id="input-globuf" value="50" onchange="calcAll();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-primary text-primary" id="input-globuf-t">%</span>
                                     <span class="input-group-text border-primary text-primary" id="input-globuf-b">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>IRIS uses the allocated Global and Buffer Pool to keep global data in memory, shared between processes. It is sized relative to your available physical memory.</p>
+                        <p>IRIS uses the allocated <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_db" target="_new">Global Buffer Pool</a> to keep global data in memory, shared between processes. It is sized relative to your available physical memory and preferably large enough to keep all "active" data in memory.<br/>If you have databases with <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_database_large_blocksize" target="_new"></a>alternative block sizes</a>, you may need to refine this in the generated script.</p>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group" style="width: 300px;">
+                        <div class="form-group" style="width: 150px;">
                             <label for="input-roubuf">Routine Buffers</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-success" id="input-roubuf" value="512" onchange="calcAll(1);" />
+                                <input type="number" class="form-control border-success" id="input-roubuf" value="512" onchange="calcAll();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-success text-success">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>Routine Buffers are used to keep application code cached between invocations and is also shared between processes. Except for very complex applications, a fixed allocation usually suffices.</p>
+                        <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_routine" target="_new">Routine Buffers</a> are used to keep application code cached between invocations and is also shared between processes. Except for very complex applications, a fixed allocation usually suffices.</p>
                     </div>
                 </div>
             </form>
@@ -127,15 +144,17 @@
             
             <div class="row">
                 <div class="progress" style="height: 30px;" id="bar-globuf">
-                    <div class="progress-bar bg-primary" role="progressbar" id="bar-globuf-globuf" style="width: 30%;">Globals</div>
-                    <div class="progress-bar bg-success" role="progressbar" id="bar-globuf-roubuf" style="width: 30%;">Routines</div>
-                    <div class="progress-bar bg-info" role="progressbar" id="bar-globuf-iris" style="width: 30%;">IRIS</div>
-                    <div class="progress-bar bg-secondary" role="progressbar" id="bar-globuf-os" style="width: 10%;">OS</div>
+                    <div class="progress-bar text-truncate bg-primary" role="progressbar" id="bar-globuf-globuf" style="width: 30%;">Globals</div>
+                    <div class="progress-bar text-truncate bg-success" role="progressbar" id="bar-globuf-roubuf" style="width: 30%;">Routines</div>
+                    <div class="progress-bar text-truncate bg-info" role="progressbar" id="bar-globuf-iris" style="width: 30%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-globuf-os" style="width: 10%;">OS</div>
                 </div>
             </div>
 
             <div class="row">
-                <button type="button" class="btn btn-primary" onclick="toggleTo('advanced');">Next</button>
+                <p class="lead text-right">
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('advanced');">Next</button>
+                </p>
             </div>
         </div>
 
@@ -146,62 +165,64 @@
             <form>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="form-group" style="width: 300px;">
+                        <div class="form-group" style="width: 150px;">
                             <label for="input-heap">Total Heap</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-warning" id="input-heap" value="512" onchange="calcAll(1);" />
+                                <input type="number" class="form-control border-warning" id="input-heap" value="512" onchange="calcAll();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-warning text-warning">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>Overall amount of memory to allocate for shared memory (other than global and routine buffers).</p>
+                        <p>Overall amount of memory to allocate for <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCM_dashboard#GCM_dashboard_performance_heapusagetable" target="_new">the general memory heap</a>.</p>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group" style="width: 300px;">
+                        <div class="form-group" style="width: 150px;">
                             <label for="input-locks">Lock table</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-warning" id="input-locks" value="128" onchange="calcAll(1);" />
+                                <input type="number" class="form-control border-warning" id="input-locks" value="32" onchange="calcAll();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-warning text-warning">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>Locks</p>
+                        <p>Locks also consume memory and are by definition visible across processes. You can allocate <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_locksiz" target="_new">additional memory for locks</a> (out of the heap memory defined earlier) if you expect a lot of concurrent transactions.</p>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group" style="width: 300px;">
+                        <div class="form-group" style="width: 200px;">
                             <label for="input-ppm">Max per-process memory</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-info" id="input-ppm" value="256" onchange="calcAll(1);" />
+                                <input type="number" class="form-control border-info" id="input-ppm" value="256" onchange="calcAll();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-info text-info">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>The overall system default 256MB maintains a good balance between leaving room for important processes to claim what they need and keeping a safe maximum.</p>
+                        <p>You can also configure a maximum amount of <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=AVMEM" target="_new">memory for any individual IRIS process</a>. The overall system default 256MB maintains a good balance between leaving room for important processes to claim what they need and keeping a safe maximum.</p>
                     </div>
                 </div>
             </form>
             
             <div class="row">
                 <div class="progress" style="height: 30px;" id="bar-advanced">
-                    <div class="progress-bar bg-primary" role="progressbar" id="bar-advanced-globuf" style="width: 30%;">Globals</div>
-                    <div class="progress-bar bg-success" role="progressbar" id="bar-advanced-roubuf" style="width: 30%;">Routines</div>
-                    <div class="progress-bar bg-warning" role="progressbar" id="bar-advanced-heap" style="width: 30%;">IRIS</div>
-                    <div class="progress-bar bg-info" role="progressbar" id="bar-advanced-iris" style="width: 30%;">IRIS</div>
-                    <div class="progress-bar bg-secondary" role="progressbar" id="bar-advanced-os" style="width: 10%;">OS</div>
+                    <div class="progress-bar text-truncate bg-primary" role="progressbar" id="bar-advanced-globuf" style="width: 30%;">Globals</div>
+                    <div class="progress-bar text-truncate bg-success" role="progressbar" id="bar-advanced-roubuf" style="width: 30%;">Routines</div>
+                    <div class="progress-bar text-truncate bg-warning" role="progressbar" id="bar-advanced-heap" style="width: 30%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-info" role="progressbar" id="bar-advanced-iris" style="width: 30%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-advanced-os" style="width: 10%;">OS</div>
                 </div>
             </div>
 
             <div class="row">
-                <button type="button" class="btn btn-primary" onclick="toggleTo('script');">Generate script</button>
+                <p class="lead text-right">
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('script');">Generate script</button>
+                </p>
             </div>
         </div>
 
         <div class="jumbotron wiz-step" id="div-script">
             <div class="row">
-                <p>All settings configured in the previous screens can now be enforced by either updating the CPF file or by running the following ObjectScript code. Restarting IRIS is required for the changes to take effect.</p>
+                <p>All settings configured in the previous screens can now be enforced by either updating the <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS" target="_new">CPF file</a> (directly or through <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_cpf#RACS_cpf_edit_merge" target="_new">CPF Merge</a>) or by running the following ObjectScript code. Restarting IRIS is required for the changes to take effect.</p>
             </div>
             <div class="row">
                 <div class="col-md-6">
