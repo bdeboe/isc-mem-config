@@ -55,7 +55,7 @@
                 <div class="form-group" style="width: 150px;">
                     <label for="input-total">Total memory</label>
                     <div class="input-group">
-                        <input type="number" class="form-control" id="input-total" value="64" onchange="calcAll();" />
+                        <input type="number" class="form-control" id="input-total" value="64" onchange="applyBestPractice(true);" />
                         <div class="input-group-append">
                           <span class="input-group-text">GB</span>
                         </div>
@@ -84,7 +84,7 @@
                 <div class="form-group" style="width: 300px;">
                     <label for="input-os">Reserve for others</label>
                     <div class="input-group">
-                        <input type="number" class="form-control" id="input-os" value="10" onchange="calcAll();" />
+                        <input type="number" class="form-control" id="input-os" value="10" onchange="draw();" />
                         <div class="input-group-append">
                             <span class="input-group-text" id="input-os-t">%</span>
                             <span class="input-group-text" id="input-os-b">MB</span>
@@ -117,7 +117,7 @@
                         <div class="form-group" style="width: 300px;">
                             <label for="input-globuf">Global buffers</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-primary" id="input-globuf" value="50" onchange="calcAll();" />
+                                <input type="number" class="form-control border-primary" id="input-globuf" value="50" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-primary text-primary" id="input-globuf-t">%</span>
                                     <span class="input-group-text border-primary text-primary" id="input-globuf-b">MB</span>
@@ -130,13 +130,13 @@
                         <div class="form-group" style="width: 150px;">
                             <label for="input-roubuf">Routine Buffers</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-success" id="input-roubuf" value="512" onchange="calcAll();" />
+                                <input type="number" class="form-control border-success" id="input-roubuf" value="512" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-success text-success">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_routine" target="_new">Routine Buffers</a> are used to keep application code cached between invocations and is also shared between processes. Except for very complex applications, a fixed allocation usually suffices.</p>
+                        <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_routine" target="_new">Routine Buffers</a> are used to keep application code cached between invocations and is also shared between processes. InterSystems recommends allocating 10% of the amount of memory allocated for global buffers, with a maximum value of 1020MB.</p>
                     </div>
                 </div>
             </form>
@@ -168,19 +168,19 @@
                         <div class="form-group" style="width: 150px;">
                             <label for="input-heap">Total Heap</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-warning" id="input-heap" value="512" onchange="calcAll();" />
+                                <input type="number" class="form-control border-warning" id="input-heap" value="512" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-warning text-warning">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>Overall amount of memory to allocate for <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCM_dashboard#GCM_dashboard_performance_heapusagetable" target="_new">the general memory heap</a>.</p>
+                        <p>Overall amount of memory to allocate for <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCM_dashboard#GCM_dashboard_performance_heapusagetable" target="_new">the general memory heap</a>. This default value is based on your total available memory. You may increase it if you expect a lot of complex queries.</p>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" style="width: 150px;">
                             <label for="input-locks">Lock table</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-warning" id="input-locks" value="32" onchange="calcAll();" />
+                                <input type="number" class="form-control border-warning" id="input-locks" value="32" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-warning text-warning">MB</span>
                                 </div>
@@ -192,7 +192,7 @@
                         <div class="form-group" style="width: 200px;">
                             <label for="input-ppm">Max per-process memory</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-info" id="input-ppm" value="256" onchange="calcAll();" />
+                                <input type="number" class="form-control border-info" id="input-ppm" value="256" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-info text-info">MB</span>
                                 </div>
@@ -221,9 +221,9 @@
         </div>
 
         <div class="jumbotron wiz-step" id="div-script">
-            <div class="row">
-                <p>All settings configured in the previous screens can now be enforced by either updating the <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS" target="_new">CPF file</a> (directly or through <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_cpf#RACS_cpf_edit_merge" target="_new">CPF Merge</a>) or by running the following ObjectScript code. Restarting IRIS is required for the changes to take effect.</p>
-            </div>
+            <h1>Applying your settings</h1>
+            <p>All settings configured in the previous screens can now be enforced by either updating the <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS" target="_new">CPF file</a> (directly or through <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_cpf#RACS_cpf_edit_merge" target="_new">CPF Merge</a>) or by running the following ObjectScript code. Restarting IRIS is required for the changes to take effect.</p>
+            
             <div class="row">
                 <div class="col-md-6">
                     <h2>CPF Merge File</h2>

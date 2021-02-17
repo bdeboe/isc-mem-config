@@ -4,12 +4,58 @@ function toggleTo(id) {
     $(".wiz-step").hide();
     $("#div-"+id).show();
 
-    calcAll((id=="system") ? 0 : (id=="os") ? 1 : (id=="buffer") ? 2 : 3);
+    draw();
 }
 
+// initialize view
 toggleTo("system");
 
-function calcAll() {
+function applyBestPractice(newTotal = false) {
+    
+    totalGB = $("#input-total").val();
+
+    // When setting a new system overall total, reset the OS %.
+    if (newTotal) {
+        // This is somewhat arbitrary as globuf defaults are based on total memory,
+        // but it's informative in the visual sense and a reminder IRIS is not alone.
+        $("#input-os").val((totalGB > 64) ? 10 : 20);
+    }
+
+    // applying globuf best practices per
+    // https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSCALE_vertical#GSCALE_vertical_memory_oview
+    //      ==> 50% of total memory when < 64GB, 70% otherwise
+    globufPct = (totalGB < 64) ? 50 : 70;
+
+    // applying roubuf best practices per
+    // http://turbo.iscinternal.com/prodlog/devview.csp?Key=RJF432 
+    //      ==> 10% of global buffers, min 36MB, max 1020MB
+    roubufMB = (globufPct / 100 * totalGB * 1024) / 10;
+    if (roubufMB < 36) roubufMB = 36;
+    if (roubufMB > 1020) roubufMB = 1020;
+
+    // applying heap best practices per 
+    // https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSCALE_vertical#GSCALE_vertical_memory_oview
+    //      ==> 256MB when < 64GB, 384MB otherwise
+    // increased per CM advice
+    //      ==> 256MB when < 16GB, 384MB when < 32GB, 512MB when < 64GB, 1024MB otherwise
+    heapMB = (totalGB < 16) ? 256 : (totalGB < 32) ? 384 : (totalGB < 64) ? 512 : 1024;
+
+    // budgeting 1/8th of heap space for locks, max at 128
+    lockMB = heapMB / 8;
+    if (lockMB > 128) lockMB = 128;
+
+    // apply settings and re-draw
+    x = $("#input-globuf").val(globufPct);
+    x = $("#input-roubuf").val(roubufMB);
+    x = $("#input-heap").val(heapMB);
+    x = $("#input-locks").val(lockMB);
+    draw();
+}
+
+// initialize best practices
+applyBestPractice(true);
+
+function draw() {
 
     // total
     totalMB = $("#input-total").val()*1024;
@@ -44,7 +90,7 @@ function calcAll() {
     drawBar("bar-advanced-globuf", globufMB, totalMB, "Globals");
     drawBar("bar-advanced-roubuf", roubufMB, totalMB, "Routines");
     drawBar("bar-advanced-heap", heapMB, totalMB, "Heap");
-    drawBar("bar-advanced-iris", totalMB-osMB-globufMB-roubufMB-heapMB, totalMB, "Other IRIS");
+    drawBar("bar-advanced-iris", totalMB-osMB-globufMB-roubufMB-heapMB, totalMB, "IRIS processes");
     
 
     // generate script
