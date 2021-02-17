@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26">
+  <Document name="isc-mem-config.ZPM">
+    <Module>
+      <Name>isc-mem-config</Name>
+      <Version>0.1.0</Version>
+      <Packaging>module</Packaging>
+      <SourcesRoot>src</SourcesRoot>
+      <CSPApplication
+        Url="/csp/mem-config"
+        SourcePath="/src/web"
+        CookiePath="/csp/mem-config/"
+        DeployPath="${cspdir}/mem-config/"
+        UnauthenticatedEnabled="1"
+        ServeFiles="1"
+        Recurse="1"
+       />
+    </Module>
+  </Document>
+</Export>
