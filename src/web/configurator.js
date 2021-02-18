@@ -108,7 +108,7 @@ function draw() {
                           "locksiz="+locksiz+"\n" +
                           "bbsiz="+bbsiz);
 
-    $("#script-cos").text('zn "%SYS"\n' +
+    $("#script-cos").text('set $namespace = "%SYS"\n' +
                           'set props = ##class(Config.config).Open()\n' +
                           'set props.globals8kb = '+globufMB+"\n" +
                           'set props.routines = '+routines+"\n" +
