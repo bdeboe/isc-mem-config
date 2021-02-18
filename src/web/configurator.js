@@ -83,21 +83,22 @@ function draw() {
     drawBar("bar-globuf-roubuf", roubufMB, totalMB, "Routines");
     drawBar("bar-globuf-iris", totalMB-osMB-globufMB-roubufMB, totalMB, "Other IRIS");
 
-    // advanced
+    // heap
     heapMB = parseInt($("#input-heap").val());
+    lockMB = parseInt($("#input-locks").val());
 
-    drawBar("bar-advanced-os", osMB, totalMB, "OS");
-    drawBar("bar-advanced-globuf", globufMB, totalMB, "Globals");
-    drawBar("bar-advanced-roubuf", roubufMB, totalMB, "Routines");
-    drawBar("bar-advanced-heap", heapMB, totalMB, "Heap");
-    drawBar("bar-advanced-iris", totalMB-osMB-globufMB-roubufMB-heapMB, totalMB, "IRIS processes");
+    drawBar("bar-heap-os", osMB, totalMB, "OS");
+    drawBar("bar-heap-globuf", globufMB, totalMB, "Globals");
+    drawBar("bar-heap-roubuf", roubufMB, totalMB, "Routines");
+    drawBar("bar-heap-heap", (heapMB+lockMB), totalMB, "Heap", "(includes locks)");
+    drawBar("bar-heap-iris", totalMB-osMB-globufMB-roubufMB-heapMB-lockMB, totalMB, "IRIS processes");
     
 
     // generate script
     globals = "0,0,"+globufMB+",0,0,0";
     routines = roubufMB;
-    gmheap = heapMB*1024; // in kb
-    locksiz = $("#input-locks").val()*1024*1024; // in bytes
+    gmheap = (heapMB+lockMB)*1024; // in kb
+    locksiz = lockMB*1024*1024; // in bytes
     bbsiz = $("#input-ppm").val()*1024; // in kb
 
     $("#script-cpf").text("[config]\n" +
@@ -119,20 +120,18 @@ function draw() {
 
 }
 
-function drawBar(id, mb, total, str) {
+function drawBar(id, mb, total, str, info="") {
     $("#"+id).css("width", formatWidth(mb/total))
              .text(str+": "+formatMB(mb))
+             .attr("data-content", str+": "+formatMB(mb)+" "+info)
              .popover({
-                //"title": str,
-                "content": str+": "+formatMB(mb),
                 "placement": "bottom",
                 "trigger": "hover"
-             }) //.popover("show")
-             ;
+             });
 }
 
 function formatMB(mb) {
-    if (mb > 1000) {
+    if (mb > 1025) {
         return (Math.round(mb/102.4)/10)+" GB";
     } else {
         return mb + " MB";

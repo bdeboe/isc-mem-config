@@ -40,7 +40,10 @@
                     <a class="nav-link" href="#" id="nav-buffer" onclick="toggleTo('buffer');">Buffers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="nav-advanced" onclick="toggleTo('advanced');">Advanced</a>
+                    <a class="nav-link" href="#" id="nav-heap" onclick="toggleTo('heap');">Heap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary" href="#" id="nav-advanced" onclick="toggleTo('advanced');">Advanced</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-info" href="#" id="nav-script" onclick="toggleTo('script');"><strong>Script</strong></a>
@@ -92,7 +95,7 @@
                     </div>
                 </div>
             </form>
-            <p>This includes memory for other IRIS instances and any other applications or services such as monitoring utilities.</p>
+            <p>This includes memory for other IRIS instances, external code called from IRIS (e.g. a JVM invoked through the Java Gateway) and any other applications or services such as monitoring utilities.</p>
             
             <div class="row">
                 <div class="progress" style="height: 30px;" id="bar-os">
@@ -124,7 +127,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p>IRIS uses the allocated <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_db" target="_new">Global Buffer Pool</a> to keep global data in memory, shared between processes. It is sized relative to your available physical memory and preferably large enough to keep all "active" data in memory.<br/>If you have databases with <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_database_large_blocksize" target="_new"></a>alternative block sizes</a>, you may need to refine this in the generated script.</p>
+                        <p>IRIS uses the allocated <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_db" target="_new">Global Buffer Pool</a> to keep global data in memory, shared between processes. It is sized relative to your available physical memory and preferably large enough to keep all "active" data in memory.<br/>If you have databases with <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_database_large_blocksize" target="_new">alternative block sizes</a>, you may need to refine this in the generated script.</p>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group" style="width: 150px;">
@@ -136,7 +139,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_routine" target="_new">Routine Buffers</a> are used to keep application code cached between invocations and is also shared between processes. InterSystems recommends allocating 10% of the amount of memory allocated for global buffers, with a maximum value of 1020MB.</p>
+                        <p><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSA_config#GSA_config_system_startup_caches_routine" target="_new">Routine Buffers</a> are used to keep application code and SQL query plans cached between invocations and is also shared between processes. InterSystems recommends allocating 10% of the amount of memory allocated for global buffers, with a maximum value of 1020MB.</p>
                     </div>
                 </div>
             </form>
@@ -153,18 +156,18 @@
 
             <div class="row">
                 <p class="lead text-right">
-                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('advanced');">Next</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('heap');">Next</button>
                 </p>
             </div>
         </div>
 
-        <div class="jumbotron wiz-step" id="div-advanced">
-            <h1>Filling in the details</h1>
-            <p class="lead">Finally, the General Memory Heap is used for other shared memory requirements, such as the locks and IPQ memory for parallel query execution. The remaining memory is used by individual processes for local variables, objects, etc.</p>
+        <div class="jumbotron wiz-step" id="div-heap">
+            <h1>The Memory Heap</h1>
+            <p class="lead">Finally, the General Memory Heap is used for other shared memory requirements, such as very long strings and IPQ memory used for parallel query execution. The remaining memory will be used by individual processes for local variables, objects, etc.</p>
 
             <form>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group" style="width: 150px;">
                             <label for="input-heap">Total Heap</label>
                             <div class="input-group">
@@ -174,8 +177,36 @@
                                 </div>
                             </div>
                         </div>
-                        <p>Overall amount of memory to allocate for <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCM_dashboard#GCM_dashboard_performance_heapusagetable" target="_new">the general memory heap</a>. This default value is based on your total available memory. You may increase it if you expect a lot of complex queries.</p>
+                        <p>Overall amount of memory to allocate for <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCM_dashboard#GCM_dashboard_performance_heapusagetable" target="_new">the generic memory heap</a>. This default value is based on your total available memory. You may increase it if you expect a lot of complex queries.</p>
                     </div>
+                </div>
+            </form>
+            
+            <div class="row">
+                <div class="progress" style="height: 30px;" id="bar-heap">
+                    <div class="progress-bar text-truncate bg-primary" role="progressbar" id="bar-heap-globuf" style="width: 30%;">Globals</div>
+                    <div class="progress-bar text-truncate bg-success" role="progressbar" id="bar-heap-roubuf" style="width: 30%;">Routines</div>
+                    <div class="progress-bar text-truncate bg-warning" role="progressbar" id="bar-heap-heap" style="width: 30%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-info" role="progressbar" id="bar-heap-iris" style="width: 30%;">IRIS</div>
+                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-heap-os" style="width: 10%;">OS</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <p class="lead text-right">
+                    <button type="button" class="btn btn-lg btn-outline-secondary" onclick="toggleTo('advanced');">Advanced settings</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="toggleTo('script');">Generate script</button>
+                </p>
+            </div>
+        </div>
+        
+
+        <div class="jumbotron wiz-step" id="div-advanced">
+            <h1>Advanced Settings</h1>
+            <p class="lead">The following settings also contribute to overall system performance, but may only need tweaking for specific workloads, after you find the default values still spell trouble.</p>
+
+            <form>
+                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group" style="width: 150px;">
                             <label for="input-locks">Lock table</label>
@@ -186,7 +217,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p>Locks also consume memory and are by definition visible across processes. You can allocate <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_locksiz" target="_new">additional memory for locks</a> (out of the heap memory defined earlier) if you expect a lot of concurrent transactions.</p>
+                        <p>Locks also consume memory and are by definition visible across processes. You can allocate <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=RACS_locksiz" target="_new">additional memory for locks</a> if you expect a lot of concurrent transactions.</p>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" style="width: 200px;">
@@ -202,16 +233,6 @@
                     </div>
                 </div>
             </form>
-            
-            <div class="row">
-                <div class="progress" style="height: 30px;" id="bar-advanced">
-                    <div class="progress-bar text-truncate bg-primary" role="progressbar" id="bar-advanced-globuf" style="width: 30%;">Globals</div>
-                    <div class="progress-bar text-truncate bg-success" role="progressbar" id="bar-advanced-roubuf" style="width: 30%;">Routines</div>
-                    <div class="progress-bar text-truncate bg-warning" role="progressbar" id="bar-advanced-heap" style="width: 30%;">IRIS</div>
-                    <div class="progress-bar text-truncate bg-info" role="progressbar" id="bar-advanced-iris" style="width: 30%;">IRIS</div>
-                    <div class="progress-bar text-truncate bg-secondary" role="progressbar" id="bar-advanced-os" style="width: 10%;">OS</div>
-                </div>
-            </div>
 
             <div class="row">
                 <p class="lead text-right">
