@@ -20,7 +20,14 @@ Then, simply open `src/web/configurator.html` in your browser and walk through t
 Optionally, you can _install_ the wizard using [zpm](https://github.com/intersystems-community/zpm):
 
 ```ObjectScript
-zpm install isc-mem-config
+USER> zpm
+zpm: USER> install isc-mem-config
 ```
 
-For now, there is no real interaction between the wizard and any IRIS instance it runs on, as the standalone aspect is conveniently versatile by itself. Feel free to share your ideas and feedback on improving this UX in the [issues](https://github.com/bdeboe/isc-mem-config/issues) section!
+After which you can access the wizard at http://localhost:52773/csp/mem-config/configurator.html.
+
+## Further Work
+
+For now, there is no real interaction between the wizard and any IRIS instance it runs on, as the standalone aspect is conveniently versatile by itself. 
+
+Feel free to share your ideas and feedback on improving this UX in the [issues](https://github.com/bdeboe/isc-mem-config/issues) section!
