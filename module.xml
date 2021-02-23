@@ -3,7 +3,8 @@
   <Document name="isc-mem-config.ZPM">
     <Module>
       <Name>isc-mem-config</Name>
-      <Version>0.1.0</Version>
+      <Version>0.1.1</Version>
+      <Description>IRIS Memory Configuration Wizard</Description>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <CSPApplication
