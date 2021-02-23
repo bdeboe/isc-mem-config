@@ -8,4 +8,4 @@ InterSystems IRIS memory settings are crucial to ensure high performance. This s
 
 Simply open `src/web/configurator.html` in your browser and walk through the steps.
 
-![Screenshot](docs/screenshot.png?raw=true)
+![Screenshot](https://github.com/bdeboe/isc-mem-config/raw/main/docs/screenshot.png?raw=true)
