@@ -36,9 +36,9 @@ function applyBestPractice(newTotal = false) {
     // applying heap best practices per 
     // https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GSCALE_vertical#GSCALE_vertical_memory_oview
     //      ==> 256MB when < 64GB, 384MB otherwise
-    // increased per CM advice
-    //      ==> 256MB when < 16GB, 384MB when < 32GB, 512MB when < 64GB, 1024MB otherwise
-    heapMB = (totalGB < 16) ? 256 : (totalGB < 32) ? 384 : (totalGB < 64) ? 512 : 1024;
+    // increased per CM & CS advice
+    //      ==> 384MB when < 16GB, 512MB when < 32GB, 1024MB when < 64GB, 2048MB otherwise
+    heapMB = (totalGB < 16) ? 384 : (totalGB < 32) ? 512 : (totalGB < 64) ? 1024 : 2048;
 
     // budgeting 1/8th of heap space for locks, max at 128
     lockMB = heapMB / 8;
