@@ -99,7 +99,7 @@ function draw() {
     routines = roubufMB;
     gmheap = (heapMB+lockMB)*1024; // in kb
     locksiz = lockMB*1024*1024; // in bytes
-    bbsiz = $("#input-ppm").val()*1024; // in kb
+    bbsiz = ($("#input-ppm").val() > 0) ? $("#input-ppm").val()*1024 : -1; // in kb
 
     $("#script-cpf").text("[config]\n" +
                           "globals="+globals+"\n" +

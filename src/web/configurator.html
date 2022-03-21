@@ -223,13 +223,13 @@
                         <div class="form-group" style="width: 200px;">
                             <label for="input-ppm">Max per-process memory</label>
                             <div class="input-group">
-                                <input type="number" class="form-control border-info" id="input-ppm" value="256" onchange="draw();" />
+                                <input type="number" class="form-control border-info" id="input-ppm" value="-1" onchange="draw();" />
                                 <div class="input-group-append">
                                     <span class="input-group-text border-info text-info">MB</span>
                                 </div>
                             </div>
                         </div>
-                        <p>You can also configure a maximum amount of <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=AVMEM" target="_new">memory for any individual IRIS process</a>. The overall system default 256MB maintains a good balance between leaving room for important processes to claim what they need and keeping a safe maximum.</p>
+                        <p>You can also configure a maximum amount of <a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=AVMEM" target="_new">memory for any individual IRIS process</a>. The default value of -1 (since IRIS 2021.2) means processes can take any of the remaining memory and is appropriate for many types of workloads, especially analytical queries. You can set a limit if you expect a very high number of user processes.</p>
                     </div>
                 </div>
             </form>
